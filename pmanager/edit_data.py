@@ -1,11 +1,12 @@
 import peewee
+import sys 
 from prettytable import PrettyTable
-from models import Credentials
+from pmanager.models import Credentials
 
 #print("Submit a Title query: ")
 #print("Enter 'all' to view all entries")
-#search_query = input()
-def view(search_query='all'):
+#search_query = 'all'
+def view_data(search_query):
     ### this will make the output look pretty and organised
     t = PrettyTable()
     t.field_names = ['Title','Description','Username','Password','URL']
@@ -21,4 +22,5 @@ def view(search_query='all'):
         
     print(t)
     
-view()
+if __name__=="__main__":
+    view_data(search_query)

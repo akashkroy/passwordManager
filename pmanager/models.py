@@ -8,7 +8,7 @@ class Credentials(peewee.Model):
     url = peewee.CharField()
     username = peewee.CharField()
     passphrase = peewee.CharField()
-    
+    #unique_id = peewee.CharField()
     class Meta:
         database = database
         

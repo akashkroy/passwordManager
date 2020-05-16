@@ -3,7 +3,7 @@ import string
 
 # length = int(input("Enter the length of password: "))
 
-def gen_pass(length=8):
+def gen_pass(length):
     chars = string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
     password = []
     for i in range(length):
@@ -12,4 +12,4 @@ def gen_pass(length=8):
     print("".join(password))
      
 if __name__=='__main__':
-    gen_pass(10)
+    gen_pass(length)
