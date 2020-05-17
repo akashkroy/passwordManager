@@ -3,20 +3,19 @@ import peewee
 from pmanager.models import Credentials
 
 def add():
-    name = input("Title: ")
+    name = input("Title: ").lower()
     description = input("Description: ")
-    url = input("URL of the website: ")
+    url = input("URL of the website: http://")
     username = input("Username: ")
     password = input("Password: ")
-    #unique_id = username + url
+    unique_id = username + "@" + url
 
-    data = Credentials.insert({Credentials.name: name,
+    Credentials.insert({Credentials.name: name,
                             Credentials.description: description,
                             Credentials.url: url,
                             Credentials.username: username,
-                            Credentials.passphrase: password}).execute()
+                            Credentials.passphrase: password,
+                            Credentials.unique_id: unique_id}).execute()
     
     print("Added")
     
-if __name__=="__main__":
-    add()

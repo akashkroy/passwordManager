@@ -15,12 +15,15 @@ def view_data(search_query):
         result = Credentials.select()
         for res in result:
             t.add_row([res.name,res.description,res.username,res.passphrase,res.url])
+        print(t)
         #print(result)
     else:
-        result = Credentials.select().where(Credentials.name==search_query).get()
-        t.add_row([result.name,result.description,result.username,result.passphrase,result.url])
-        
-    print(t)
+        try:
+            query = search_query.lower()
+            result = Credentials.select().where(Credentials.name==query).get()
+            t.add_row([result.name,result.description,result.username,result.passphrase,result.url])
+            print(t)
+        except:
+            print("No result found for {}.".format(search_query))
     
-if __name__=="__main__":
-    view_data(search_query)
+    
