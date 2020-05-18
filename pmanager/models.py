@@ -3,7 +3,7 @@ import peewee
 database = peewee.SqliteDatabase("homework.db")
 
 class Credentials(peewee.Model):
-    name = peewee.CharField()
+    title = peewee.CharField()
     description = peewee.CharField()
     url = peewee.CharField()
     username = peewee.CharField()

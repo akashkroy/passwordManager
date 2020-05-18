@@ -13,18 +13,16 @@ def view(search_query):
     if search_query=='all':
         result = Credentials.select()
         for res in result:
-            t.add_row([res.name,res.description,res.username,res.passphrase,res.url])
+            t.add_row([res.title,res.description,res.username,res.passphrase,res.url])
         print(t)
         
     else:
-        try:
-            query = search_query.lower()
-            results = Credentials.select().where(Credentials.name==query)
+        query = search_query.lower()
+        results = Credentials.select().where(Credentials.title==query)
+        if results.count()>0:
+            print("Number of queries found : {}\n".format(results.count()))
             for result in results:
-                t.add_row([result.name,result.description,result.username,result.passphrase,result.url])
+                t.add_row([result.title,result.description,result.username,result.passphrase,result.url])
             print(t)
-        except:
-            print("No result found for {}.".format(search_query))
-    
-    
-        
+        else:
+            print("No result found for {} \nTry Again :)".format(search_query))
