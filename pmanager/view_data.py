@@ -19,8 +19,9 @@ def view(search_query):
     else:
         try:
             query = search_query.lower()
-            result = Credentials.select().where(Credentials.name==query).get()
-            t.add_row([result.name,result.description,result.username,result.passphrase,result.url])
+            results = Credentials.select().where(Credentials.name==query)
+            for result in results:
+                t.add_row([result.name,result.description,result.username,result.passphrase,result.url])
             print(t)
         except:
             print("No result found for {}.".format(search_query))

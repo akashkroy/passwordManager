@@ -2,7 +2,7 @@
 
 import sys
 import argparse
-from pmanager import view_data, add_data, generate_password, delete, edit_data
+from pmanager import view_data, add_data, generate_password, delete, edit
 
 def parser():
     parser = argparse.ArgumentParser(description="A simple password manager")
@@ -32,7 +32,7 @@ if user_input.view:
 # print(parser())
 
 if user_input.edit:
-    edit_data.edit_data(user_input.edit)
+    edit.edit_data(user_input.edit)
 
 if user_input.perform=='add':
     print("Add data to the Password Manager")
