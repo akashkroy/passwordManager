@@ -8,7 +8,7 @@ def add():
     url = input("URL of the website: http://")
     username = input("Username: ")
     password = input("Password: ")
-    unique_id = username + "@" + url
+    unique_id = "{}@{}".format(username,url)
 
     Credentials.insert({Credentials.name: name,
                             Credentials.description: description,
