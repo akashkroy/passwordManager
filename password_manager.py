@@ -6,11 +6,11 @@ from pmanager import view_data, add_data, generate_password, delete, edit
 
 def parser():
     parser = argparse.ArgumentParser(description="A simple password manager")
-    parser.add_argument("--add", type=str, help="Add data to the Manager")
+    parser.add_argument("--add", nargs="+", type=str, help="Add data directly to the Manager")
     parser.add_argument("--view", type=str, help="View all entries in the Manager")
     parser.add_argument("--edit", type=str, help="Edit an enrty")
     parser.add_argument("--gen", type=int, help="Generate a password of length N (N is a integer)")
-    parser.add_argument("--perform", choices=["add", "remove", "delete"], help="An example of limits")
+    parser.add_argument("--perform", choices=["add", "delete"], help="Add or Delete rows")
     return parser.parse_args()
 
 """def usage():
@@ -24,7 +24,7 @@ def parser():
 
 user_input = parser()
 if user_input.gen:
-    print("Password of length: {add}".format(add=user_input.gen))
+    print("Password of length: {length}".format(length=user_input.gen))
     generate_password.gen_pass(user_input.gen)
     
 if user_input.view:
@@ -40,3 +40,11 @@ if user_input.perform=='add':
     
 if user_input.perform=='delete':
     delete.del_row()
+    
+if user_input.add:
+    title = user_input.add[0]
+    description = user_input.add[1]
+    username = user_input.add[2]
+    password = user_input.add[3]
+    url = user_input.add[4]
+    add_data.add_to_db(title,description,username,password,url)

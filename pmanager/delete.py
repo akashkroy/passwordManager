@@ -8,17 +8,20 @@ def del_row():
     unique_id = username + "@" + url
     t = PrettyTable()
     t.field_names = ["Title","Description","Username","URL"]
-    query = Credentials.select().where(Credentials.unique_id==unique_id).get()
-    t.add_row([query.name, query.description,query.username,query.url])
-    print(t)
-    
-    proceed = int(input("Enter 1 to proceed, any other key to abort"))
-    if proceed:
-        #del_query = Credentials.delete().where(Credentials.unique_id==unique_id)
-        del_query = query.delete()
-        del_query.execute()
-        print("Selected Row Deleted")
+    try:
+        query = Credentials.select().where(Credentials.unique_id==unique_id).get()
+        t.add_row([query.title, query.description,query.username,query.url])
+        print(t)
         
-    else:
-        print("Program Aborted!")
+        proceed = input("Are you sure you want to delete this entry ? (y/n)\n")
+        if proceed=='y':
+            del_query = Credentials.delete().where(Credentials.unique_id==unique_id)
+            #del_query = query.delete()
+            del_query.execute()
+            print("Selected Row Deleted")
+            
+        else:
+            print("Program Aborted!")
+    except:
+        print("Username or URL not found\nProgram Aborted!")
       
