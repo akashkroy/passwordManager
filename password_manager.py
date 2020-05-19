@@ -6,21 +6,12 @@ from pmanager import view_data, add_data, generate_password, delete, edit
 
 def parser():
     parser = argparse.ArgumentParser(description="A simple password manager")
-    parser.add_argument("--add", nargs="+", type=str, help="Add data directly to the Manager")
-    parser.add_argument("--view", type=str, help="View all entries in the Manager")
-    parser.add_argument("--edit", type=str, help="Edit an enrty")
-    parser.add_argument("--gen", type=int, help="Generate a password of length N (N is a integer)")
+    parser.add_argument("--add", nargs="+", type=str, help=" [Title] ['Description'] [Username] ['Password'] [URL]")
+    parser.add_argument("--view", type=str, help="use [all] to view all entries or [Title] of the entry")
+    parser.add_argument("--edit", type=str, help="[URL]   :::: Do Not use http:// when specifying URL")
+    parser.add_argument("--gen", type=int, help="[INTEGER]  :::: Generate a password length [INTEGER]")
     parser.add_argument("--perform", choices=["add", "delete"], help="Add or Delete rows")
     return parser.parse_args()
-
-"""def usage():
-    print('''USAGE: password_manager [options]
-          gen n     Generate a password of length n
-          view      View all the entries in the manager
-          add       Add Data to the Manager 
-          del       Remove entry from the Manager
-          help      View Usage
-          ''')"""
 
 user_input = parser()
 if user_input.gen:
