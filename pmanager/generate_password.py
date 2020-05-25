@@ -10,7 +10,5 @@ def gen_pass(length=10):
         _ = random.choice(chars)
         password.append(_)
     final = "".join(password)
-    return final
+    print(final)
      
-if __name__=='__main__':
-    gen_pass(length)
