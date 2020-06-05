@@ -13,29 +13,34 @@ def parser():
     parser.add_argument("--perform", choices=["add", "delete"], help="Add or Delete rows")
     return parser.parse_args()
 
-user_input = parser()
-if user_input.gen:
-    print("Password of length: {length}".format(length=user_input.gen))
-    generate_password.gen_pass(user_input.gen)
-    
-if user_input.view:
-    view_data.view(user_input.view)
-# print(parser())
 
-if user_input.edit:
-    edit.edit_data(user_input.edit)
+def main():
+    user_input = parser()
+    if user_input.gen:
+        print("Password of length: {length}".format(length=user_input.gen))
+        generate_password.gen_pass(user_input.gen)
+        
+    if user_input.view:
+        view_data.view(user_input.view)
+    # print(parser())
 
-if user_input.perform=='add':
-    print("Add data to the Password Manager")
-    add_data.add()
-    
-if user_input.perform=='delete':
-    delete.del_row()
-    
-if user_input.add:
-    title = user_input.add[0]
-    description = user_input.add[1]
-    username = user_input.add[2]
-    password = user_input.add[3]
-    url = user_input.add[4]
-    add_data.add_to_db(title,description,username,password,url)
+    if user_input.edit:
+        edit.edit_data(user_input.edit)
+
+    if user_input.perform=='add':
+        print("Add data to the Password Manager")
+        add_data.add()
+        
+    if user_input.perform=='delete':
+        delete.del_row()
+        
+    if user_input.add:
+        title = user_input.add[0]
+        description = user_input.add[1]
+        username = user_input.add[2]
+        password = user_input.add[3]
+        url = user_input.add[4]
+        add_data.add_to_db(title,description,username,password,url)
+
+if __name__ == "__main__":
+    main()

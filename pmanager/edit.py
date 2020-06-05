@@ -1,103 +1,57 @@
 import peewee
 from pmanager.models import Credentials
 from prettytable import PrettyTable
+from .helpers import create_table
+from . import constants
+
+def create_db_field(row, field):
+    if field not in [x.lower() for x in constants]:
+        print("* Incorrect Value: Program Aborted!")
+        return
+
+    edit_value = input("* Enter the value : ")
+
+    table_row = [row.title, row.description, row.username, row.passphrase, row.url]
+    for index, _field in enumerate(constants.FIELDS):
+        if _field.lower() == field:
+            table_row[index] = edit_value
+
+    create_table([table_row], output=True)
+    proceed = input("* Do you want to save changes (y/n)? ")
+
+    if proceed.lower() != 'y':
+        print("* Changes not saved. Program aborted!")
+    
+    unique_id = "{}@{}".format(row.username,row.url)
+    query = Credentials.update({field:edit_value}).where(Credentials.unique_id==unique_id)
+    query.execute()
+    print("* Changes saved.")
+        
 
 def edit_data(url):
-    t = PrettyTable()
-    t.field_names = ['Title','Description','Username','Password','URL']
-
     results = Credentials.select().where(Credentials.url==url)
-    if results.count()>0:
-        for result in results:
-            t.add_row([result.title,result.description,result.username,result.passphrase,result.url])
-        print(t)
-        
-        username = input("\n* Enter Username of the row you want to edit: ")
-        unique_id = "{}@{}".format(username,url)
-        try:
-            row = Credentials.select().where(Credentials.unique_id==unique_id).get()
-            t = PrettyTable()
-            t.field_names = ['Title','Description','Username','Password','URL']
-            t.add_row([row.title,row.description,row.username,row.passphrase,row.url])
-            print(t)
-            print("* Enter the name of field you want to change: Title, Description, Username, Password, URL: ")
-            edit_field = input()
-            print("* Enter the value : ")
-            edit_value = input()
-            t = PrettyTable()
-            t.field_names = ['Title','Description','Username','Password','URL']
-            
-            if "title"==edit_field.lower():
-                print("* Enter the value : ")
-                edit_value = input()
-                t.add_row([edit_value,row.description,row.username,row.passphrase,row.url])
-                print(t)
-                proceed = input("* Do you want to save changes (y/n)?")
-                if proceed.lower()=='y':
-                    query = Credentials.update(title=edit_value).where(Credentials.unique_id==unique_id)
-                    query.execute()
-                    print(t)
-                else:
-                    print("* Changes not saved. Program aborted!")
-                
-                
-            elif "description"==edit_field.lower():
-                print("* Enter the value : ")
-                edit_value = input()
-                t.add_row([row.title,edit_value,row.username,row.passphrase,row.url])
-                print(t)
-                proceed = input("* Do you want to save changes (y/n)?")
-                if proceed.lower()=='y':
-                    query = Credentials.update(description=edit_value).where(Credentials.unique_id==unique_id)
-                    query.execute()
-                    print(t)
-                else:
-                    print("* Changes not saved. Program aborted!")
-                
-            elif "username"==edit_field.lower():
-                print("* Enter the value : ")
-                edit_value = input()
-                t.add_row([row.title,row.description,edit_value,row.passphrase,row.url])
-                print(t)
-                proceed = input("* Do you want to save changes (y/n)?")
-                if proceed.lower()=='y':
-                    query = Credentials.update(username=edit_value).where(Credentials.unique_id==unique_id)
-                    query.execute()
-                    print(t)
-                else:
-                    print("* Changes not saved. Program aborted!")
-                
-            elif "password"==edit_field.lower():
-                print("* Enter the value : ")
-                edit_value = input()
-                t.add_row([row.title,row.description,row.username,edit_value,row.url])
-                print(t)
-                proceed = input("* Do you want to save changes (y/n)?")
-                if proceed.lower()=='y':
-                    query = Credentials.update(passphrase=edit_value).where(Credentials.unique_id==unique_id)
-                    query.execute()
-                    print(t)
-                else:
-                    print("* Changes not saved. Program aborted!")
-            
-            elif "url"==edit_field.lower():
-                print("* Enter the value : ")
-                edit_value = input()
-                t.add_row([row.title,row.description,row.username,row.passphrase,edit_value])
-                print(t)
-                proceed = input("* Do you want to save changes (y/n)?")
-                if proceed.lower()=='y':
-                    query = Credentials.update(url=edit_value).where(Credentials.unique_id==unique_id)
-                    query.execute()
-                    print(t)
-                else:
-                    print("* Changes not saved. Program aborted!")
-            
-            else:
-                print("* Incorrect Value: Program Aborted!")
-        except:
-            print("* Incorrect username : Username not found!")
-        
-    else:
+
+    if results.count()<0:
         print("* URL not found! \n* Try Again :)")
-            
+        return
+
+    rows = list()
+    for result in results:
+        rows.append([result.title,result.description,result.username,result.passphrase,result.url])
+    create_table(rows, output=True)
+    
+    username = input("\n* Enter Username of the row you want to edit: ")
+    unique_id = "{}@{}".format(username,url)
+    try:
+        row = Credentials.select().where(Credentials.unique_id==unique_id).get()
+
+        table_row = [row.title, row.description, row.username, row.passphrase, row.url]
+
+        create_table([table_row], output=True)
+
+        print("* Enter the name of field you want to change: {fields}".format(fields=", ".join(constants.FIELDS)))
+        edit_field = input()
+        create_db_field(row, edit_field.lower())
+    
+    except Exception as e:
+        print("* Incorrect username : Username not found!", str(e))

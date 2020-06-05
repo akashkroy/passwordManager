@@ -11,7 +11,12 @@ class Credentials(peewee.Model):
     unique_id = peewee.CharField()
     class Meta:
         database = database
-        
+
+    @classmethod
+    def get_by_unique_id(cls, unique_id):
+        return Credentials.select().where(Credentials.unique_id==unique_id).get()
+
+    
 if __name__=="__main__":
     try:
         Credentials.create_table()
